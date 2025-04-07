@@ -96,3 +96,5 @@ Version ba04 01_28_2025
  - All  features should work on Linux/Mac/Windows.
  - Requires Python 3.7+.
  - The pypy interpreter (www.pypy.org) will speed up the program many-fold.
+ - As of 040625 A new version of the program and database is being uploaded to GITHUB.  Major change is that the phylogeny is now taken from a combination of ncbi rDNA taxonomy, SILVA, pr2, Greengenes, and a large set of incidental rDNA files from Genbank downloaded 01/25.  This is by nature incomplete but more complete than anything in the previous version.  Note also that current versions also present identities of known 18S barcodes based on the distribution of hits in the preferred database (e.g. the following ncbi:Bacteria|Pseudomonadati|Planctomycetota|Planctomycetia|Pirellulales|Pirellulaceae(.94)|Novipirellula(.29)|Stieleria_maiorica(.06), which indicates the various phylogenetic groups with a given barcode sequence followed by the fraction of all sequences from the indicated database (in this case ncbi rDNA) matching the indicated barcode that comes from each successive phylogenetic group.  Please provide feedback as to the utility of the current version.
+ - Thanks (AZ)
