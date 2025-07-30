@@ -164,7 +164,7 @@ HighlyNovelOut1 = True ## A separate output of the highly novel sequences
 OutFileName1 = 'default' ## (out=) File Name for output data
 CatchReads1 = False      ## Setting this to true will catch all motif-matching reads into a FastA or FastQ file, with the barcode prepended to the description line to allow later extraction and more complete assembly
 Delimiter1 = '\n'              ## line delimiter for tabular output files (default:'\n')
-
+MaxBarcodesForGraphicDisplay1 = 100 ## Will display only this number of Barcode clamp folds in the browser window
 ## Settings for clamp folding assessment
 CoreTemp1 = 0 ## Equivalent core temperature of ribosome decoding center for deltaG calculation
 TryRandom1 = 1000 ## Try a set of sequences shuffled in each core flanking region and get a range of values (bootstrap test)
@@ -1221,9 +1221,11 @@ if myThread1==-1:
                 myLine1 = '\t'.join(map(str,myReport1)).replace('Counter','')+Delimiter1
                 OutFile1.write(myLine1)
                 bList,score1 = MakeBList1(s1)
-                showMe1(bList,nd1,b1.bardid,'%.2f'%b1.clampE+' (bootstrap: %0.1f'%b1.clampEPercentile+'%'+')')
+                if MaxBarcodesForGraphicDisplay1 and nd1<MaxBarcodesForGraphicDisplay1:
+                    showMe1(bList,nd1,b1.bardid,'%.2f'%b1.clampE+' (bootstrap: %0.1f'%b1.clampEPercentile+'%'+')')
         OutFile1.close()
-    vdisplay(OutFile2)
+    if MaxBarcodesForGraphicDisplay1:
+        vdisplay(OutFile2)
 vLog('finished',vFileOut=True)
 
             
