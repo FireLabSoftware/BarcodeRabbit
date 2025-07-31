@@ -1,0 +1,4 @@
+As of 07-31-25, There were some small conditional bugs that emerged in the previous major update (CA03), 
+and these should now be fixed in an incremental version (CA05).  Older versions are in the older 
+version folder.  Give a holler if this works (or fails).
+Andy
