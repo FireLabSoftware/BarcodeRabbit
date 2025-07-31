@@ -1,8 +1,7 @@
 # BarcodeRabbit
-A counting/identification tool for NGS datasets that (i) evaluates rRNA species composition, and (ii) nominates novel rRNA species
-
+######################
 BarcodeRabbit-- SSU rRNA-based Reference-agnostic phylogenetic survey of cellular composition from NGS datasets
-Version ba04 01_28_2025
+Version ca05 073125
 ->Fuction: BarcodeRabbit is designed to make use of a highly conserved "core" motif in defining composition of source material for NGS datasets
  - The general question is "I have a(some) NGS datasets and want to know how rich the source material was in both known and unknown species.
  - Two applications are envisioned for BarcodeRabbit
@@ -16,7 +15,7 @@ Version ba04 01_28_2025
 
 ->Syntax
  - python BarcodeRabbit<ver>.py  Data=<file,file..>   <Threads=# [e.g.8]>  
- - BarcodeRabbit uses an ancillary program (VSG_ModuleFS.py).  This should be placed in the same directory that BarcodeRabbit is run from
+ - BarcodeRabbit uses an ancillary program (VSG_ModuleFV.py).  This should be placed in the same directory that BarcodeRabbit is run from
  - Two other files are needed (also in the same directory):  
  -  i) a Reference directory of SSU rRNA 'barcode' sequences.  Currently this is derived from Silva and is 'Rabbit_SSU_Barcodes_aa00_012225.fasta.gz'
  -    Other datasbases (ncbi, greengenes2, pr2) may have some advantages and formatted versions of these will be available 'soon'
@@ -26,10 +25,11 @@ Version ba04 01_28_2025
  -          pypy3 BarcodeRabbit_ba04_012825.py data=''/Users/rabbit/media/datadrive/**/*.fastq.gz'
  -      This command will run BarcodeRabbit and analyze all *.fastq.gz files in the indicated directory and any subdirectories
  -      And you'll need these four files in the directory where BarcodeRabbit is being run from (and where the output will appear)
- -        'BarcodeRabbit_ba04_012825.py'
- -        'VSG_ModuleFS.py'
+ -        'BarcodeRabbit_bb01_040625.py'
+ -        'VSG_ModuleFV.py'
  -        'illuminatetritis1223wMultiN.single.fa'
- -        'Rabbit_SSU_Barcodes_aa00_012225.fasta.gz'  
+ -        'Rabbit_SSU_Barcodes_bb01_040625.fasta.gz'
+ -        'bardwords.txt'
 ->Output
  - The outputs of RabbitSSUBarcodeCounter are spreadsheets (.tsv files) with a list of data for barcode sequences that may be either
  -   Barcode_segments from known SSU genes (with some identity information to indicate what species could have provided these
@@ -57,7 +57,12 @@ Version ba04 01_28_2025
  -   13 U2_BestMatchScore: Best Match score for a relatively short sequence (sups2) just upstream of the core.  A perfect or near perfect match here with poor matche by the full upstream sequence (col 11) indicates possible chimerism or artefact within the upstream flank.
  -   14 D2_BestMatchScore: Best Match score for a relatively short sequence (sdwn2) just downstream of the core.  A perfect or near perfect match here with poor matche by the full upstream sequence (col 11) indicates possible chimerism or artefact within the upstream flank.
  -   15 Conserved_9_Score: A metric indicating the number of bases in the core that match a consensus of 9 residues that are generally conserved between Eukaryotes, Bacteria, Archae, Mitochondria, and Chloroplasts.  A low score here (<3) is strongly indicative of potential SSU rRNA character, while larger values may indicate either a non-rRNA locus that just happened to have the core or a very highly diverged rRNA SSU segment.
- -   16 AssemblyLocal: A very naive local assembly that may be of use in a blast search or other analysis.  Not of quality expected for a program like Spades or Megahit-- this is merely to facilitate interim assessment.
+ -   16 Clamp_Affinity_Metric: A metric indicating the quality of any potential duplex just outside the conserved 20-mer that "clamps" this sequence in the ribosome structure.  Higher values (e.g.>20) seem strongly indicative of true ribosomal origin.
+ -   17 WashUSS_Provisional: A diagram of possible secondary structure for a clamp, using the WashUSS conventions (see documentation for Infernal for definitions).
+ -   18 Clamp_Percentile: A percentile of clamp quality (energy) amongst a set of sequences where bases outside the core-20 mer are randomly shuffled (default 1000 different shuffles) to yield a bootstrap comparision (higher number indicates greater significance of clamp structure).
+ -   19 High_Novelty: A boolean flag indicating which sequences match the variety of flags set up to detect novelty amongst barcodes.
+ -   20 Bard_Mnemonic: This is an experimental mnemoic derived from teh sequence and energy properties of each barcode.  In some cases, similar barcodes will have similarities in their mnemonic. Words are from W.Shakespeare with some editing to attempt to avoid profanity.
+ -   21 AssemblyLocal: A very naive local assembly that may be of use in a blast search or other analysis.  Not of quality expected for a program like Spades or Megahit-- this is merely to facilitate interim assessment.
 
 ->Required Parameters
 ->Required Parameter 1: A Reference file with one or many 'reference' sequences in fasta format
@@ -96,5 +101,3 @@ Version ba04 01_28_2025
  - All  features should work on Linux/Mac/Windows.
  - Requires Python 3.7+.
  - The pypy interpreter (www.pypy.org) will speed up the program many-fold.
- - As of 040625 A new version of the program and database is being uploaded to GITHUB.  Major change is that the phylogeny is now taken from a combination of ncbi rDNA taxonomy, SILVA, pr2, Greengenes, and a large set of incidental rDNA files from Genbank downloaded 01/25.  This is by nature incomplete but more complete than anything in the previous version.  Note also that current versions also present identities of known 18S barcodes based on the distribution of hits in the preferred database (e.g. the following ncbi:Bacteria|Pseudomonadati|Planctomycetota|Planctomycetia|Pirellulales|Pirellulaceae(.94)|Novipirellula(.29)|Stieleria_maiorica(.06), which indicates the various phylogenetic groups with a given barcode sequence followed by the fraction of all sequences from the indicated database (in this case ncbi rDNA) matching the indicated barcode that comes from each successive phylogenetic group.  Please provide feedback as to the utility of the current version.
- - Thanks (AZ)
